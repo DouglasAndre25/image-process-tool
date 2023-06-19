@@ -5,6 +5,7 @@ import './styles.scss'
 import ImageInput from '../../components/ImageInput'
 import ProcessOneImage from '../../components/ProcessOneImage'
 import ResultImageModal from '../../components/ResultImageModal'
+import ProcessTwoImages from '../../components/ProcessTwoImages'
 
 const ImageProcessPage = () => {
   const [firstImage, setFirstImage] = useState<ImageData | undefined>()
@@ -28,22 +29,32 @@ const ImageProcessPage = () => {
         </Typography>
       </Box>
 
-      <Box
-        display='grid'
-        gridTemplateColumns='.25fr .25fr'
-        sx={{ padding: (theme) => theme.spacing(3) }}
-      >
-        <Box>
-          <ImageInput onChange={(val: ImageData) => setFirstImage(val)} />
-          <ProcessOneImage image={firstImage} setResultImage={setResultImage} />
+      <Box display='grid' gridTemplateColumns='.5fr .5fr'>
+        <Box
+          display='grid'
+          gridTemplateColumns='.25fr .25fr'
+          justifyContent='space-around'
+          sx={{ padding: (theme) => theme.spacing(3) }}
+        >
+          <Box>
+            <ImageInput onChange={(val: ImageData) => setFirstImage(val)} />
+            <ProcessOneImage image={firstImage} setResultImage={setResultImage} />
+          </Box>
+
+          <Box>
+            <ImageInput onChange={(val: ImageData) => setSecondImage(val)} />
+            <ProcessOneImage image={secondImage} setResultImage={setResultImage} />
+          </Box>
         </Box>
 
-        <Box>
-          <ImageInput onChange={(val: ImageData) => setSecondImage(val)} />
-          <ProcessOneImage image={secondImage} setResultImage={setResultImage} />
+        <Box sx={{ padding: (theme) => theme.spacing(3) }}>
+          <ProcessTwoImages
+            firstImage={firstImage}
+            secondImage={secondImage}
+            setResultImage={setResultImage}
+          />
         </Box>
       </Box>
-
       {resultImage && (
         <ResultImageModal
           resultImage={resultImage}
