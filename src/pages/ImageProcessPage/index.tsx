@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, Typography } from '@mui/material'
 
 import './styles.scss'
+import ImageInput from '../../components/ImageInput'
+import ProcessOneImage from '../../components/ProcessOneImage'
+import ResultImageModal from '../../components/ResultImageModal'
 
 const ImageProcessPage = () => {
+  const [firstImage, setFirstImage] = useState<ImageData | undefined>()
+  const [secondImage, setSecondImage] = useState<ImageData | undefined>()
+  const [resultImage, setResultImage] = useState<ImageData | undefined>()
+
   return (
-    <div>
+    <Box>
       <Box
         bgcolor='primary.main'
         color='text.primary'
@@ -14,14 +21,38 @@ const ImageProcessPage = () => {
         <Typography
           variant='h5'
           sx={{
-            paddingTop: (theme) => theme.spacing(4),
-            paddingLeft: (theme) => theme.spacing(2),
+            padding: (theme) => theme.spacing(2),
           }}
         >
           Ferramenta de Processamento de Imagens
         </Typography>
       </Box>
-    </div>
+
+      <Box
+        display='grid'
+        gridTemplateColumns='.25fr .25fr'
+        sx={{ padding: (theme) => theme.spacing(3) }}
+      >
+        <Box>
+          <ImageInput onChange={(val: ImageData) => setFirstImage(val)} />
+          <ProcessOneImage image={firstImage} setResultImage={setResultImage} />
+        </Box>
+
+        <Box>
+          <ImageInput onChange={(val: ImageData) => setSecondImage(val)} />
+          <ProcessOneImage image={secondImage} setResultImage={setResultImage} />
+        </Box>
+      </Box>
+
+      {resultImage && (
+        <ResultImageModal
+          resultImage={resultImage}
+          handleClose={() => {
+            setResultImage(undefined)
+          }}
+        />
+      )}
+    </Box>
   )
 }
 
