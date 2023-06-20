@@ -1,7 +1,8 @@
-import React from 'react'
-import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Box, Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import {
   toBinaryScale,
+  toGaussianElimination,
   toGrayScale,
   toNegativeScale,
   toNot,
@@ -13,6 +14,8 @@ interface ProcessOneImageProps {
 }
 
 const ProcessOneImage = ({ image, setResultImage }: ProcessOneImageProps) => {
+  const [sigmaValue, setSigmaValue] = useState('')
+
   const handleGrayScale = () => {
     if (image) {
       const result = toGrayScale(image)
@@ -37,6 +40,13 @@ const ProcessOneImage = ({ image, setResultImage }: ProcessOneImageProps) => {
   const handleNot = () => {
     if (image) {
       const result = toNot(image)
+      setResultImage(result)
+    }
+  }
+
+  const handleGaussElimination = () => {
+    if (image && sigmaValue) {
+      const result = toGaussianElimination(image, parseFloat(sigmaValue))
       setResultImage(result)
     }
   }
@@ -68,6 +78,33 @@ const ProcessOneImage = ({ image, setResultImage }: ProcessOneImageProps) => {
           <Button variant='outlined' fullWidth disabled={!image} onClick={handleNot}>
             Not
           </Button>
+          <Box
+            display='flex'
+            flexDirection='row'
+            justifyContent='center'
+            sx={{ gap: (theme) => theme.spacing(2) }}
+          >
+            <TextField
+              variant='outlined'
+              value={sigmaValue}
+              onChange={(event) => {
+                const inputValue = event.target.value
+                if (/^\d*\.?\d*$/.test(inputValue)) {
+                  setSigmaValue(inputValue)
+                }
+              }}
+              disabled={!image}
+              sx={{ maxWidth: (theme) => theme.spacing(22) }}
+            />
+            <Button
+              variant='outlined'
+              fullWidth
+              disabled={!image || !sigmaValue}
+              onClick={handleGaussElimination}
+            >
+              Eliminação de Gauss
+            </Button>
+          </Box>
         </Box>
       </CardContent>
     </Card>

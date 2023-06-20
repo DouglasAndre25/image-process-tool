@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Typography } from '@mui/material'
 
-import './styles.scss'
 import ImageInput from '../../components/ImageInput'
 import ProcessOneImage from '../../components/ProcessOneImage'
 import ResultImageModal from '../../components/ResultImageModal'
